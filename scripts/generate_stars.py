@@ -5,32 +5,129 @@ Generate a markdown file with all starred repositories organized by language.
 
 import requests
 import os
+import re
+from html import unescape
 from datetime import datetime
 from collections import defaultdict
 
 # GitHub API configuration
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 GITHUB_API_BASE = 'https://api.github.com'
+GITHUB_USERNAME = os.getenv('GITHUB_USERNAME') or os.getenv('GITHUB_REPOSITORY', '').split('/')[0]
+
+def parse_stars_count(value):
+    """Parse star count text into an integer."""
+    cleaned = value.strip().lower().replace(',', '')
+    if cleaned.endswith('k'):
+        return int(float(cleaned[:-1]) * 1000)
+    if cleaned.endswith('m'):
+        return int(float(cleaned[:-1]) * 1000000)
+    return int(cleaned) if cleaned.isdigit() else 0
+
+def get_starred_repos_from_html():
+    """Fetch starred repositories from GitHub profile HTML pages.
+
+    Note: this fallback depends on GitHub's current stars page HTML structure.
+    """
+    if not GITHUB_USERNAME:
+        print("Error: GITHUB_USERNAME is required for HTML fallback.")
+        return []
+
+    all_repos = []
+    seen = set()
+    page = 1
+    # This still relies on GitHub page structure; if it breaks, inspect a stars page
+    # for repository cards and update this pattern and the field regexes below.
+    card_pattern = r'<div class="col-12 d-block width-full[^"]*color-border-muted"[^>]*>'
+
+    while True:
+        url = f'https://github.com/{GITHUB_USERNAME}?tab=stars&page={page}'
+        response = requests.get(url, timeout=30)
+
+        if response.status_code != 200:
+            print(f"Error fetching starred repos HTML: {response.status_code}")
+            break
+
+        repos_this_page = []
+        for block in re.split(card_pattern, response.text)[1:]:
+            name_match = re.search(
+                r'<h3>\s*<a href="/([^/"]+)/([^/"#?]+)">\s*<span class="text-normal">',
+                block,
+                re.S
+            )
+            if not name_match:
+                continue
+
+            owner, name = name_match.groups()
+            full_name = f'{owner}/{name}'
+            if full_name in seen:
+                continue
+
+            desc_match = re.search(r'itemprop="description">\s*(.*?)\s*</p>', block, re.S)
+            lang_match = re.search(r'itemprop="programmingLanguage">(.*?)</span>', block, re.S)
+            stars_match = re.search(
+                rf'href="/{re.escape(owner)}/{re.escape(name)}/stargazers"[^>]*>.*?([0-9,\.kKmM]+)\s*</a>',
+                block,
+                re.S
+            )
+
+            description = 'No description'
+            if desc_match:
+                description = re.sub(r'<[^>]+>', '', unescape(desc_match.group(1))).strip() or 'No description'
+
+            stars = parse_stars_count(stars_match.group(1)) if stars_match else 0
+            language = unescape(lang_match.group(1)).strip() if lang_match else 'Other'
+
+            repos_this_page.append({
+                'name': name,
+                'full_name': full_name,
+                'html_url': f'https://github.com/{full_name}',
+                'description': description,
+                'stargazers_count': stars,
+                'language': language or 'Other',
+            })
+            seen.add(full_name)
+
+        if not repos_this_page:
+            break
+
+        all_repos.extend(repos_this_page)
+        page += 1
+
+    return all_repos
 
 def get_starred_repos():
     """Fetch all starred repositories using the GitHub API."""
     headers = {}
-    if GITHUB_TOKEN:
+    use_authenticated_endpoint = bool(GITHUB_TOKEN)
+
+    if use_authenticated_endpoint:
         headers['Authorization'] = f'token {GITHUB_TOKEN}'
+        url = f'{GITHUB_API_BASE}/user/starred'
+    else:
+        if not GITHUB_USERNAME:
+            print("Error: set GITHUB_TOKEN or GITHUB_USERNAME to fetch starred repos.")
+            return []
+        url = f'{GITHUB_API_BASE}/users/{GITHUB_USERNAME}/starred'
     
     starred_repos = []
     page = 1
     per_page = 100
     
     while True:
-        url = f'{GITHUB_API_BASE}/user/starred'
         params = {'page': page, 'per_page': per_page, 'sort': 'starred_at', 'direction': 'desc'}
         
         response = requests.get(url, headers=headers, params=params)
         
         if response.status_code != 200:
             print(f"Error fetching starred repos: {response.status_code}")
-            print(response.json())
+            try:
+                print(response.json())
+            except requests.exceptions.JSONDecodeError:
+                print(
+                    f"Status {response.status_code}: failed to parse API error response as JSON. "
+                    f"Raw response: {response.text[:500]}"
+                )
             break
         
         repos = response.json()
@@ -56,7 +153,7 @@ def generate_markdown(organized_repos):
     """Generate markdown content for the README."""
     markdown = """# Starred Repos
 
-A automatically maintained index of all my starred repositories, organized by programming language.
+An automatically maintained index of all my starred repositories, organized by programming language.
 
 ## Overview
 
@@ -130,6 +227,10 @@ def main():
     """Main function to generate starred repos markdown."""
     print("Fetching starred repositories...")
     repos = get_starred_repos()
+
+    if not repos:
+        print("GitHub API fetch failed or returned no repos. Trying HTML fallback...")
+        repos = get_starred_repos_from_html()
     
     if not repos:
         print("No starred repositories found or error occurred.")
