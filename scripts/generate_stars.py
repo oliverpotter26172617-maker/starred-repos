@@ -36,7 +36,8 @@ def get_starred_repos_from_html():
     all_repos = []
     seen = set()
     page = 1
-    # This still relies on GitHub page structure; update if stars markup changes.
+    # This still relies on GitHub page structure; if it breaks, inspect a stars page
+    # for repository cards and update this pattern and the field regexes below.
     card_pattern = r'<div class="col-12 d-block width-full[^"]*color-border-muted"[^>]*>'
 
     while True:
@@ -123,7 +124,10 @@ def get_starred_repos():
             try:
                 print(response.json())
             except requests.exceptions.JSONDecodeError:
-                print(f"Failed to parse API error response as JSON. Raw response: {response.text[:500]}")
+                print(
+                    f"Status {response.status_code}: failed to parse API error response as JSON. "
+                    f"Raw response: {response.text[:500]}"
+                )
             break
         
         repos = response.json()
