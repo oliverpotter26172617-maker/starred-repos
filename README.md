@@ -15,7 +15,7 @@ This repository contains an automated system that regularly fetches and organize
 
 ## Starred Repositories
 
-**Last updated:** 2026-07-02 00:01:50 UTC
+**Last updated:** 2026-07-02 00:02:56 UTC
 
 **Total starred repos:** 30
 
@@ -31,7 +31,7 @@ This repository contains an automated system that regularly fetches and organize
 
 ### JavaScript (5)
 
-- [taste-skill](https://github.com/Leonxlnx/taste-skill) - ⭐ 54434
+- [taste-skill](https://github.com/Leonxlnx/taste-skill) - ⭐ 54433
   > Taste-Skill - gives your AI good taste. stops the AI from generating boring, generic slop
 
 - [system_prompts_leaks](https://github.com/asgeirtj/system_prompts_leaks) - ⭐ 47657
@@ -67,7 +67,7 @@ This repository contains an automated system that regularly fetches and organize
 - [olmocr](https://github.com/allenai/olmocr) - ⭐ 18256
   > Toolkit for linearizing PDFs for LLM datasets/training
 
-- [video-use](https://github.com/browser-use/video-use) - ⭐ 13203
+- [video-use](https://github.com/browser-use/video-use) - ⭐ 13204
   > Edit videos with coding agents
 
 
@@ -76,7 +76,7 @@ This repository contains an automated system that regularly fetches and organize
 - [iroh](https://github.com/n0-computer/iroh) - ⭐ 10966
   > IP addresses break, dial keys instead. A library that adds QUIC + NAT Traversal to your apps.
 
-- [herdr](https://github.com/ogulcancelik/herdr) - ⭐ 9576
+- [herdr](https://github.com/ogulcancelik/herdr) - ⭐ 9577
   > agent multiplexer that lives in your terminal.
 
 - [CubeSandbox](https://github.com/TencentCloud/CubeSandbox) - ⭐ 6781
@@ -85,7 +85,7 @@ This repository contains an automated system that regularly fetches and organize
 
 ### Shell (2)
 
-- [agency-agents](https://github.com/msitarzewski/agency-agents) - ⭐ 123324
+- [agency-agents](https://github.com/msitarzewski/agency-agents) - ⭐ 123326
   > A complete AI agency at your fingertips - From frontend wizards to Reddit community ninjas, from ...
 
 - [council-of-high-intelligence](https://github.com/0xNyk/council-of-high-intelligence) - ⭐ 2606
@@ -94,7 +94,7 @@ This repository contains an automated system that regularly fetches and organize
 
 ### TypeScript (6)
 
-- [OpenCut](https://github.com/OpenCut-app/OpenCut) - ⭐ 61106
+- [OpenCut](https://github.com/OpenCut-app/OpenCut) - ⭐ 61107
   > The open-source CapCut alternative
 
 - [open-notebook](https://github.com/lfnovo/open-notebook) - ⭐ 34347

@@ -36,8 +36,8 @@ def get_starred_repos_from_html():
     all_repos = []
     seen = set()
     page = 1
-    # These selectors are intentionally narrow and may need updates if GitHub changes markup.
-    card_marker = '<div class="col-12 d-block width-full tmp-py-4 border-bottom color-border-muted"'
+    # This still relies on GitHub page structure; update if stars markup changes.
+    card_pattern = r'<div class="col-12 d-block width-full[^"]*color-border-muted"[^>]*>'
 
     while True:
         url = f'https://github.com/{GITHUB_USERNAME}?tab=stars&page={page}'
@@ -48,7 +48,7 @@ def get_starred_repos_from_html():
             break
 
         repos_this_page = []
-        for block in response.text.split(card_marker)[1:]:
+        for block in re.split(card_pattern, response.text)[1:]:
             name_match = re.search(
                 r'<h3>\s*<a href="/([^/"]+)/([^/"#?]+)">\s*<span class="text-normal">',
                 block,
@@ -65,7 +65,7 @@ def get_starred_repos_from_html():
             desc_match = re.search(r'itemprop="description">\s*(.*?)\s*</p>', block, re.S)
             lang_match = re.search(r'itemprop="programmingLanguage">(.*?)</span>', block, re.S)
             stars_match = re.search(
-                rf'href="/{re.escape(owner)}/{re.escape(name)}/stargazers"[^>]*>.*?([0-9][0-9,\.kKmM]*)\s*</a>',
+                rf'href="/{re.escape(owner)}/{re.escape(name)}/stargazers"[^>]*>.*?([0-9,\.kKmM]+)\s*</a>',
                 block,
                 re.S
             )
@@ -124,7 +124,7 @@ def get_starred_repos():
                 print(response.json())
             except requests.exceptions.JSONDecodeError:
                 print(f"Failed to parse API error response as JSON. Raw response: {response.text[:500]}")
-            return []
+            break
         
         repos = response.json()
         if not repos:
