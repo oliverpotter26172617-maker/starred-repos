@@ -1,6 +1,6 @@
 # Starred Repos
 
-A automatically maintained index of all my starred repositories, organized by programming language.
+An automatically maintained index of all my starred repositories, organized by programming language.
 
 ## Overview
 
@@ -15,7 +15,7 @@ This repository contains an automated system that regularly fetches and organize
 
 ## Starred Repositories
 
-**Last updated:** 2026-07-02 00:00:27 UTC
+**Last updated:** 2026-07-02 00:01:50 UTC
 
 **Total starred repos:** 30
 
@@ -34,7 +34,7 @@ This repository contains an automated system that regularly fetches and organize
 - [taste-skill](https://github.com/Leonxlnx/taste-skill) - ⭐ 54434
   > Taste-Skill - gives your AI good taste. stops the AI from generating boring, generic slop
 
-- [system_prompts_leaks](https://github.com/asgeirtj/system_prompts_leaks) - ⭐ 47656
+- [system_prompts_leaks](https://github.com/asgeirtj/system_prompts_leaks) - ⭐ 47657
   > Extracted system prompts from Anthropic - Claude Fable 5, Opus 4.8, Claude Code, Claude Design. O...
 
 - [Awesome-Design-Tools](https://github.com/goabstract/Awesome-Design-Tools) - ⭐ 40440
@@ -79,13 +79,13 @@ This repository contains an automated system that regularly fetches and organize
 - [herdr](https://github.com/ogulcancelik/herdr) - ⭐ 9576
   > agent multiplexer that lives in your terminal.
 
-- [CubeSandbox](https://github.com/TencentCloud/CubeSandbox) - ⭐ 6780
+- [CubeSandbox](https://github.com/TencentCloud/CubeSandbox) - ⭐ 6781
   > Instant, Concurrent, Secure & Lightweight Sandbox for AI Agents.
 
 
 ### Shell (2)
 
-- [agency-agents](https://github.com/msitarzewski/agency-agents) - ⭐ 123323
+- [agency-agents](https://github.com/msitarzewski/agency-agents) - ⭐ 123324
   > A complete AI agency at your fingertips - From frontend wizards to Reddit community ninjas, from ...
 
 - [council-of-high-intelligence](https://github.com/0xNyk/council-of-high-intelligence) - ⭐ 2606
@@ -97,16 +97,16 @@ This repository contains an automated system that regularly fetches and organize
 - [OpenCut](https://github.com/OpenCut-app/OpenCut) - ⭐ 61106
   > The open-source CapCut alternative
 
-- [open-notebook](https://github.com/lfnovo/open-notebook) - ⭐ 34346
+- [open-notebook](https://github.com/lfnovo/open-notebook) - ⭐ 34347
   > An Open Source implementation of Notebook LM with more flexibility and features
 
-- [AiToEarn](https://github.com/yikart/AiToEarn) - ⭐ 22521
+- [AiToEarn](https://github.com/yikart/AiToEarn) - ⭐ 22522
   > Let's use AI to Earn!
 
 - [tolaria](https://github.com/refactoringhq/tolaria) - ⭐ 18016
   > Desktop app to manage markdown knowledge bases
 
-- [logto](https://github.com/logto-io/logto) - ⭐ 13250
+- [logto](https://github.com/logto-io/logto) - ⭐ 13251
   > 🧑‍🚀 Authentication and authorization infrastructure for SaaS and AI apps, built on OIDC and OAuth...
 
 - [Instatic](https://github.com/CoreBunch/Instatic) - ⭐ 2001

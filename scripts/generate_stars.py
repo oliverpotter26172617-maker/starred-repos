@@ -25,7 +25,10 @@ def parse_stars_count(value):
     return int(cleaned) if cleaned.isdigit() else 0
 
 def get_starred_repos_from_html():
-    """Fetch starred repositories from GitHub profile HTML pages."""
+    """Fetch starred repositories from GitHub profile HTML pages.
+
+    Note: this fallback depends on GitHub's current stars page HTML structure.
+    """
     if not GITHUB_USERNAME:
         print("Error: GITHUB_USERNAME is required for HTML fallback.")
         return []
@@ -33,6 +36,7 @@ def get_starred_repos_from_html():
     all_repos = []
     seen = set()
     page = 1
+    # These selectors are intentionally narrow and may need updates if GitHub changes markup.
     card_marker = '<div class="col-12 d-block width-full tmp-py-4 border-bottom color-border-muted"'
 
     while True:
@@ -119,7 +123,7 @@ def get_starred_repos():
             try:
                 print(response.json())
             except requests.exceptions.JSONDecodeError:
-                print(response.text[:500])
+                print(f"Failed to parse API error response as JSON. Raw response: {response.text[:500]}")
             return []
         
         repos = response.json()
@@ -145,7 +149,7 @@ def generate_markdown(organized_repos):
     """Generate markdown content for the README."""
     markdown = """# Starred Repos
 
-A automatically maintained index of all my starred repositories, organized by programming language.
+An automatically maintained index of all my starred repositories, organized by programming language.
 
 ## Overview
 
